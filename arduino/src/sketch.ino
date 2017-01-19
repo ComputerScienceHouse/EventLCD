@@ -15,14 +15,14 @@ uint8_t pin_lcd_latch = 5;
 
 // Settings
 const int delay_interval = 10; // milliseconds between ticks in sleep()
-uint8_t mac[] = {0x90, 0xA2, 0xDA, 0x0D, 0xBE, 0x94}; // MAC of board
+uint8_t mac[] = {0x90, 0xA2, 0xDA, 0x0D, 0xBE, 0x50}; // MAC of board
 const float refresh_interval = 20; // seconds between each refresh TODO make 20
 const float reconnect_interval = 10; // seconds between reconnection attempts
 const int max_http_retries = 3; // max HTTP retry attempts before iface retry
-const char *domain = "rancor.csh.rit.edu"; // domain of website
-const uint16_t port = 5000; // port of website
-const char *location = "lounge"; // location to search for in calendar
-const char *location_full = "Lounge"; // location to display on screen
+const char *domain = "fuckoff.csh.rit.edu"; // domain of website
+const uint16_t port = 80; // port of website
+const char *location = "user%20center"; // location to search for in calendar
+const char *location_full = "User Center"; // location to display on screen
 const uint8_t lcd_width = 20; // characters in each LCD row
 const uint8_t lcd_height = 4; // rows in LCD display
 

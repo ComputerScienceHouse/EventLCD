@@ -1,7 +1,7 @@
-from app import app
+from website import app
 import json
 from flask import request
-from events import Events
+from website.events import Events
 from datetime import datetime
 from datetime import date
 import pytz
@@ -34,9 +34,9 @@ def index(location):
   try:
     events = Events().getNextEvents(location, num_events)
     if today_only:
-      events = filter(
+      events = list(filter(
           lambda e: e['start'].date() == date.today(),
-          events)
+          events))
   except Exception as e:
     error_str = 'Error: ' + str(e).replace('\n', ' ')
 
@@ -74,7 +74,7 @@ def index(location):
 
   # If there are still rows but no more event, say so.
   if len(events) == 0 and rows > 1 and not error_str:
-    output += '\n' * ((rows - 1) / 2)
+    output += '\n' * ((rows - 1) // 2)
     if cols >= 20:
       output += '\nNo more events today' 
     elif cols > 15:

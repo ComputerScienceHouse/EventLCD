@@ -1,3 +1,4 @@
+from website import app
 import requests
 from datetime import datetime
 import dateutil.parser
@@ -9,11 +10,7 @@ import re
 
 class Events:
   def __init__(self):
-    try:
-      with open('app.yaml', 'r') as f:
-        self.config = yaml.load(f)
-    except:
-      raise Exception('Missing/invalid config')
+    self.config = app.config
 
   def getNextEvents(self, location, num):
     """Gets the next events at a location.
@@ -39,7 +36,7 @@ class Events:
         lambda e: 'start' in e and 'time' in dir(e['start']),
         events)
 
-    return events[:num]
+    return list(events)[:num]
 
 
   def getEvents(self, num):
@@ -70,7 +67,7 @@ class Events:
 
     url = (
         'https://www.googleapis.com/calendar/v3/calendars/{0}/events?{1}'
-        ).format(calendar, urllib.urlencode(params))
+        ).format(calendar, urllib.parse.urlencode(params))
 
     response = requests.get(url);
 
@@ -79,6 +76,7 @@ class Events:
 
     events = response.json()['items']
     events = map(self.formatEvent, events)
+    print(list(events))
     return events
 
 
