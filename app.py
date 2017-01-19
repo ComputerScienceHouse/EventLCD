@@ -1,21 +1,21 @@
 import yaml
+import os
 from website import app
 from tornado.wsgi import WSGIContainer
 from tornado.ioloop import IOLoop
 from tornado.web import FallbackHandler, Application
 
-try:
-  with open('website/app.yaml', 'r') as f:
-    config = yaml.load(f)
-    app.config.update(config)
-except:
-  print('Missing/invalid config (app.yaml)')
-  quit()
-
-#app.run(debug=True, port=config['port'], host=config['host'])
+config = {
+    "DEBUG": False,
+    "IP": '0.0.0.0',
+    "PORT": '8080',
+    "calendar_id": os.environ.get('EVENTLCD_CALENDAR_ID', ''),
+    "token": os.environ.get('EVENTLCD_CALENDAR_TOKEN', '')
+}
+app.config.update(config)
 
 application = Application([
   (r'.*', FallbackHandler, dict(fallback=WSGIContainer(app)))])
 
-application.listen(config['port'])
+application.listen(config['PORT'])
 IOLoop.instance().start()
