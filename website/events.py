@@ -25,15 +25,9 @@ class Events:
       List of events.
     """
     events = self.getEvents(20)
-
     # Filter by location
     events = filter(
         lambda e: 'location' in e and location.lower() in e['location'].lower(),
-        events)
-
-    # Filter out all-day events
-    events = filter(
-        lambda e: 'start' in e and 'time' in dir(e['start']),
         events)
 
     return list(events)[:num]
@@ -76,7 +70,6 @@ class Events:
 
     events = response.json()['items']
     events = map(self.formatEvent, events)
-    print(list(events))
     return events
 
 
@@ -91,9 +84,13 @@ class Events:
     """
     if 'start' in e and 'dateTime' in e['start']:
       e['start'] = dateutil.parser.parse(e['start']['dateTime'])
+    elif 'start' in e and 'date' in e['start']:
+      e['start'] = dateutil.parser.parse(e['start']['date'])
 
     if 'end' in e and 'dateTime' in e['end']:
       e['end'] = dateutil.parser.parse(e['end']['dateTime'])
+    elif 'end' in e and 'date' in e['end']:
+      e['end'] = dateutil.parser.parse(e['end']['date'])
 
     # If event description contains special tag [lcd: <value>], display that
     # value instead of the event summary.
@@ -101,6 +98,5 @@ class Events:
       lcdValue = re.findall(r'\[lcd:\s*([^\]]+)\]', e['description'])
       if lcdValue:
         e['summary'] = lcdValue[0]
-
     return e
 

@@ -18,11 +18,6 @@ def index(location):
   rows = int(rows)
   cols = int(cols)
 
-  # TEMP
-  if location == 'all':
-    events = Events().getNextEvents('lounge', 20)
-    return json.dumps(events)
-
   # How many events based on whether there's enough rows to display the
   # information row.
   num_events = rows - 1 if rows > 1 else 1
